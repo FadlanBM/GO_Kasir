@@ -20,6 +20,7 @@
         android:id="@+id/btnScanQR"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
+        android:layout_marginVertical="@dimen/_10sdp"
         android:layout_height="match_parent"
         tools:listitem="@layout/adapter_list_barang_cart"
         android:layout_below="@id/btnScanQR"
@@ -27,13 +28,13 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:id="@+id/rvcartBarang"/>
     <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_200sdp"
         android:layout_height="wrap_content"
-        android:text="Add Transaksi"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginVertical="@dimen/_20sdp"
         app:cornerRadius="@dimen/_10sdp"
+        app:icon="@drawable/buy_for_change_50px"
         android:id="@+id/btn_Transaksi"/>
 
 

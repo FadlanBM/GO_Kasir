@@ -6,7 +6,7 @@ import (
 )
 
 func FormatIDR(amount float64) string {
-	amountStr := strconv.FormatFloat(amount, 'f', 2, 64)
+	amountStr := strconv.FormatFloat(amount, 'f', 0, 64)
 
 	parts := strings.Split(amountStr, ".")
 
@@ -15,7 +15,7 @@ func FormatIDR(amount float64) string {
 
 	formattedAmount := formattedIntPart + "." + parts[1]
 
-	formattedAmount = "IDR " + formattedAmount
+	formattedAmount = formattedAmount
 
 	return formattedAmount
 }

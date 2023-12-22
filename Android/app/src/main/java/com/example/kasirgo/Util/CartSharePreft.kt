@@ -49,13 +49,11 @@ class CartSharePreft constructor(context: Context) {
 
     fun updatePrice(potition: Int,data: String){
         val price=sharePreft.getString(sharePrice,null)
-
         if (price!=null){
             val priceArray= JSONArray(price)
             for (i in 0 until priceArray.length()){
                 if (i==potition) {
                     priceArray.put(i, data)
-                    break
                 }
             }
             editorrice.putString(sharePrice,priceArray.toString()).apply()
@@ -77,12 +75,14 @@ class CartSharePreft constructor(context: Context) {
 
 
     fun saveCount(count:String){
+        Log.e("totalCount",count)
         val jsonArray= JSONArray()
         val countExis=sharePreft.getString(shareCount,null)
         if (countExis!=null){
             val exisArray= JSONArray(countExis)
             for (i in 0 until exisArray.length()){
                 jsonArray.put(exisArray.getString(i))
+                break
             }
         }
         jsonArray.put(count)
@@ -122,7 +122,7 @@ class CartSharePreft constructor(context: Context) {
         if (countExis!=null){
             val countJson= JSONArray(countExis)
             for (i in 0 until countJson.length()){
-                if (i ==potition){
+                if (i==potition){
                     countJson.put(i, data)
                     break
                 }
@@ -132,26 +132,26 @@ class CartSharePreft constructor(context: Context) {
         }
     }
 
+
     fun deleteData(potition: Int){
         val dataExisCount=sharePreft.getString(shareCount,null)
         val dataExisid=sharePreft.getString(shareId,null)
         val priceExis=sharePreft.getString(sharePrice,null)
-        val dataArrayid= JSONArray(dataExisid)
-        val dataArrayCount= JSONArray(dataExisCount)
-        val priceArray= JSONArray(priceExis)
-        for (i in 0 until dataArrayid.length()){
-            if (i == potition){
-                dataArrayid.remove(i)
-                dataArrayCount.remove(i)
-                priceArray.remove(i)
-                break
+            if (dataExisid!=null) {
+                val dataArrayid = JSONArray(dataExisid)
+                val dataArrayCount = JSONArray(dataExisCount)
+                val priceArray = JSONArray(priceExis)
+                for (i in 0 until dataArrayid.length()) {
+                        if (i == potition) {
+                            dataArrayid.remove(i)
+                            dataArrayCount.remove(i)
+                            priceArray.remove(i)
+                        }
+                }
+                editorrice.putString(sharePrice,priceArray.toString()).apply()
+                editorCount.putString(shareCount,dataArrayCount.toString()).apply()
+                editorid.putString(shareId,dataArrayid.toString()).apply()
             }
-        }
-        editorrice.putString(sharePrice,priceArray.toString()).apply()
-        editorCount.putString(shareCount,dataArrayCount.toString())
-        editorCount.apply()
-        editorid.putString(shareId,dataArrayid.toString())
-        editorid.apply()
     }
 
     fun clearCart(){

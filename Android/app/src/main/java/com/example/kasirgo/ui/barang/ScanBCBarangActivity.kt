@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,6 +19,7 @@ import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
 import com.example.kasirgo.AdapterRV.AdapterCart
 import com.example.kasirgo.MenuKasirActivity
+import com.example.kasirgo.R
 import com.example.kasirgo.Util.BaseAPI
 import com.example.kasirgo.Util.CartSharePreft
 import com.example.kasirgo.Util.SharePref
@@ -32,6 +34,7 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
+import kotlin.system.exitProcess
 
 class ScanBCBarangActivity : AppCompatActivity() {
     private  lateinit var codeScanner:CodeScanner
@@ -144,14 +147,35 @@ class ScanBCBarangActivity : AppCompatActivity() {
                             conn.errorStream?.bufferedReader()?.use { it.readLine() }
                         }
                         withContext(Dispatchers.Main) {
+                            var IsStatus=false
                              if (code in 200 until 300) {
                                  val jsonKaryawan = JSONObject(body!!)
                                  val dataKaryawan=jsonKaryawan.getJSONArray("Data")
                                  for(i in 0 until dataKaryawan.length()) {
                                      val jsonObject = dataKaryawan.getJSONObject(i)
                                      val id = jsonObject.getString("code_barang")
-                                     CartSharePreft(this@ScanBCBarangActivity).saveId(id)
-                                     CartSharePreft(this@ScanBCBarangActivity).saveCount("0")
+                                     val price = jsonObject.getString("price")
+
+                                     val idExis=CartSharePreft(this@ScanBCBarangActivity).getId()
+                                     val countExis=CartSharePreft(this@ScanBCBarangActivity).getCount()
+                                     Log.e("countExis",countExis.toString())
+                                     for (i in idExis.indices){
+                                         val ids=idExis[i]
+                                         val countlist=countExis.getOrNull(i)
+                                         if (ids==id){
+                                             val pCount = idExis.indexOf(id)
+                                             CartSharePreft(this@ScanBCBarangActivity).countUpdate(pCount,(countlist!!.toInt()+1).toString())
+                                             val intent=Intent(this@ScanBCBarangActivity, MenuKasirActivity::class.java)
+                                             intent.putExtra("status","kasir")
+                                             startActivity(intent)
+                                             IsStatus=true
+                                         }
+                                     }
+                                     if (IsStatus!=true){
+                                         CartSharePreft(this@ScanBCBarangActivity).saveId(id)
+                                         CartSharePreft(this@ScanBCBarangActivity).savePrice(price)
+                                         CartSharePreft(this@ScanBCBarangActivity).saveCount("1")
+                                     }
                                  }
                                  val intent=Intent(this@ScanBCBarangActivity, MenuKasirActivity::class.java)
                                  intent.putExtra("status","kasir")

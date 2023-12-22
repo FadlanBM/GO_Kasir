@@ -3,7 +3,6 @@ package Barang
 import (
 	"errors"
 	"github.com/ProjectLSP/config"
-	"github.com/ProjectLSP/internal/helper"
 	"github.com/ProjectLSP/internal/models"
 	"github.com/ProjectLSP/internal/request"
 	"github.com/ProjectLSP/internal/response"
@@ -48,7 +47,7 @@ func Index(c *fiber.Ctx) error {
 			CodeBarang: v.CodeBarang,
 			Merek:      v.Merek,
 			Tipe:       v.Tipe,
-			Price:      helper.FormatIDR(v.Price),
+			Price:      v.Price,
 			Stock:      v.Stock,
 		}
 		res = append(res, barangResponse)
@@ -126,7 +125,7 @@ func DetailQR(c *fiber.Ctx) error {
 			CodeBarang: v.CodeBarang,
 			Merek:      v.Merek,
 			Tipe:       v.Tipe,
-			Price:      helper.FormatIDR(v.Price),
+			Price:      v.Price,
 			Stock:      v.Stock,
 		}
 		res = append(res, voucerResponse)
