@@ -25,7 +25,7 @@ func Index(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"Status": "Internal Server Error", "Message": err.Error()})
 	}
 
-	return c.Status(200).JSON(fiber.Map{"Message": "Success", "Data": karyawan})
+	return c.Status(200).JSON(fiber.Map{"message": "Success", "data": karyawan})
 }
 
 // Create godoc
